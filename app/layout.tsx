@@ -3,43 +3,44 @@ import React, { ReactNode } from 'react';
 import { Metadata } from 'next';
 import Script from 'next/script';
 import ErrorBoundary from '../components/ErrorBoundary';
+import MaintenancePage from '../components/MaintenancePage';
 import { AppProvider } from '../lib/context/AppContext';
 import { WebVitals } from '../components/WebVitals';
-import { AdsterraSocialBar } from '../components/Adsterra';
+import { AdsterraSocialBar, AdsterraGlobalScript } from '../components/Adsterra';
 import { WebSiteStructuredData, OrganizationStructuredData } from '../components/StructuredData';
 
 export const metadata: Metadata = {
   title: {
-    default: '123Movies - Watch Free Movies, TV Shows & Anime Online',
-    template: '%s | 123Movies',
+    default: 'Sage Movies - Free Movies, TV Shows & Anime Streaming',
+    template: '%s | Sage Movies',
   },
   description:
-    'Watch free movies, TV shows and anime online on 123Movies. Stream trending movies, 123movies official site, movies for kids and popular TV series without registration.',
+    'Watch free movies, TV shows and anime online. Stream trending movies, 123movies alternatives, movies for kids and popular TV series without registration.',
   keywords:
-    '123movies, free movies, trending movies, movies for kids, anime streaming, TV shows online, watch movies free, 123movies official',
-  authors: [{ name: '123Movies' }],
-  creator: '123Movies',
-  publisher: '123Movies',
+    'free movies, 123movies, trending movies, movies for kids, anime streaming, TV shows online, watch movies free, streaming site',
+  authors: [{ name: 'Sage Movies' }],
+  creator: 'Sage Movies',
+  publisher: 'Sage Movies',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://123movies-sage.netlify.app'),
+  metadataBase: new URL('https://sagemovies.com'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://123movies-sage.netlify.app',
-    title: '123Movies - Watch Free Movies, TV Shows & Anime Online',
+    url: 'https://sagemovies.com',
+    title: 'Sage Movies - Free Movies, TV Shows & Anime Streaming',
     description:
-      'Watch free movies, TV shows and anime online on 123Movies. Stream trending movies, 123movies official site, movies for kids and popular TV series without registration.',
-    siteName: '123Movies',
+      'Watch free movies, TV shows and anime online. Stream trending movies, 123movies alternatives, movies for kids and popular TV series without registration.',
+    siteName: 'Sage Movies',
     images: [
       {
         url: 'https://image.tmdb.org/t/p/original/9Gtg2DzBhmYamXBS1hKAhiwbBKS.jpg',
         width: 1200,
         height: 630,
-        alt: '123Movies',
+        alt: 'Sage Movies',
       },
     ],
   },
@@ -71,6 +72,8 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  const isMaintenanceMode = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true';
+
   return (
     <html lang="en" className="scroll-smooth">
       <head>
@@ -86,12 +89,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <ErrorBoundary>
           <AppProvider>
             <WebVitals />
-            {children}
+            {isMaintenanceMode ? <MaintenancePage /> : children}
             <AdsterraSocialBar />
-            <Script
-              src="https://pl30566060.effectivecpmnetwork.com/0b/05/3c/0b053ca6d8fa77c3cd61797ebae4b7bb.js"
-              strategy="afterInteractive"
-            />
+            <AdsterraGlobalScript />
           </AppProvider>
         </ErrorBoundary>
       </body>
